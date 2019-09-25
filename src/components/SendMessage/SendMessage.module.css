@@ -1,0 +1,26 @@
+.SendMessage {
+	position: relative;
+}
+
+.SendMessage button {
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 0;
+}
+
+.SendMessage img {
+	width: 20px;
+	height: 20px;
+}
+
+.SendMessageOverlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2);
+	z-index: 100;
+}

@@ -1,0 +1,18 @@
+.MessageListContainer {
+	align-content: center;
+	align-items: center;
+	display: flex;
+	margin-bottom: 20px;
+}
+
+.MessageListContainerUser {
+	flex-direction: row-reverse;
+}
+
+.MessageListContainerOptions {
+	display: flex;
+}
+
+.MessageListContainerOptions label:not(:last-child) {
+	margin-right: 10px;
+}

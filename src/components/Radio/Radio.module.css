@@ -1,0 +1,15 @@
+.Radio {
+  background-color: cyan;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.Radio:hover,
+.Radio:checked {
+  background-color: blue;
+  color: white;
+}
+
+.Radio > input {
+  display: none;
+}
