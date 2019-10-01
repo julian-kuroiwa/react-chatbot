@@ -1,4 +1,6 @@
 import React, {Component, Fragment} from 'react';
+import {connect} from 'react-redux';
+import {reset} from 'redux-form';
 
 import MessageList from '../components/MessageList/MessageList';
 import SendMessage from '../components/SendMessage/SendMessage';
@@ -6,22 +8,6 @@ import SendMessage from '../components/SendMessage/SendMessage';
 import questions from '../data/questions';
 
 class Chatbot extends Component {
-  constructor(props) {
-		super(props);
-
-		this.state = {
-			answers: {},
-			messages: [{
-				message: questions[0].question,
-				...(questions[0].options ? {options: questions[0].options} : {}),
-			}],
-			counter: 0,
-			disableInput: false,
-			currentQuestion: questions[0].id,
-		};
-		this.sendForm = this.sendForm.bind(this);
-	}
-
 	optionHandle = event => {
 		this.setState({
 			answers: {
@@ -38,58 +24,42 @@ class Chatbot extends Component {
 		});
 	}
 
-	sendForm = event => {
-		event.preventDefault();
-
-		this.setState({
-			answers: {
-				...this.state.answers,
-				...{
-					[questions[this.state.counter].id]: this.element.value
-				}
-			},
-			messages: [
-				...this.state.messages,
-				...[{message: this.element.value, user: true}]
-			],
-			counter: this.state.counter + 1,
-		});
-
-		document.forms[0].reset();
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		if(prevState.counter !== this.state.counter) {
-
-			this.setState({
-				messages: [
-					...this.state.messages,
-					...[{ message: questions[this.state.counter].question, options: questions[this.state.counter].options }]
-					],
-					disableInput: questions[this.state.counter].disableInput ? questions[this.state.counter].disableInput : false,
-					currentQuestion: questions[this.state.counter].id
-				});
-
-				console.log(this.state);
-		}
-	};
-
 	render() {
 		return (
 			<Fragment>
-				<MessageList 
-					messages={this.state.messages} 
-					optionHandler={this.optionHandle} />
-				{(this.state.currentQuestion === 'end' 
-					? <p className='finish'>That's it! :D</p> 
+				<MessageList
+					messages={this.props.messages}
+					optionHandler={this.props.onSubmitMessage} />
+				{(this.props.currentQuestion === 'end'
+					? <p className='finish'>That's it! :D</p>
 					: <SendMessage
 							refElement={el => this.element = el}
-							disableMessage={this.state.disableInput}
-							submitHandler={this.sendForm} />
+							disableMessage={this.props.disableInput}
+							submitHandler={this.props.onSubmitMessage} />
 				)}
 			</Fragment>
 		);
 	}
 }
 
-export default Chatbot;
+const mapStateToProps = state => {
+	return {
+		answers: state.data.answers,
+		messages: state.data.messages,
+		counter: state.data.counter,
+		disableInput: state.data.disableInput,
+	};
+}
+
+const mapDispatchToProps = dispatch => {
+	return {
+		onSubmitMessage: data => {
+			dispatch({type: 'SUBMIT_MESSAGE', value: data.target ? data.target.value : data.userField})
+			dispatch({type: 'NEW_QUESTION'})
+			dispatch(reset('userForm'));
+		}
+	}
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chatbot);
