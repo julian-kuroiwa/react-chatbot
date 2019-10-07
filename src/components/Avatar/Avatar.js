@@ -1,8 +1,8 @@
 import React from 'react';
-import classes from './Avatar.module.css';
+import * as S from './styled';
 
 const avatar = props => (
-	<div className={classes.Avatar}></div>
+	<S.Avatar />
 );
 
 export default avatar;

@@ -1,46 +1,39 @@
-import React, {Component, Fragment} from 'react';
+import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import {reset} from 'redux-form';
 
 import MessageList from '../components/MessageList/MessageList';
+import MessageListContainer from '../components/MessageList/MessageListContainer/MessageListContainer';
 import SendMessage from '../components/SendMessage/SendMessage';
 
-import questions from '../data/questions';
+import * as actionTypes from '../store/actions';
 
-class Chatbot extends Component {
-	optionHandle = event => {
-		this.setState({
-			answers: {
-				...this.state.answers,
-				...{
-					[questions[this.state.counter].id]: event.target.value
-				}
-			},
-			messages: [
-				...this.state.messages,
-				...[{message: event.target.value, user: true}]
-			],
-			counter: this.state.counter + 1,
-		});
-	}
+const chatbot = props => {
+	let messages = props.messages.map((element, index) => {
+		return <MessageListContainer
+						key={index}
+						user={element.user}
+						text={element.message}
+						options={element.options}
+						optionHandler={props.onSubmitMessage} />
+	});
 
-	render() {
-		return (
-			<Fragment>
-				<MessageList
-					messages={this.props.messages}
-					optionHandler={this.props.onSubmitMessage} />
-				{(this.props.currentQuestion === 'end'
-					? <p className='finish'>That's it! :D</p>
-					: <SendMessage
-							refElement={el => this.element = el}
-							disableMessage={this.props.disableInput}
-							submitHandler={this.props.onSubmitMessage} />
-				)}
-			</Fragment>
-		);
-	}
-}
+	return (
+		<Fragment>
+		<MessageList
+			messages={props.messages} >
+				{messages}
+		</MessageList>
+		{(props.currentQuestion === 'end'
+			? <p className='finish'>That's it! :D</p>
+			: <SendMessage
+					refElement={el => this.element = el}
+					disableMessage={props.disableInput}
+					submitHandler={props.onSubmitMessage} />
+		)}
+	</Fragment>
+	);
+};
 
 const mapStateToProps = state => {
 	return {
@@ -54,12 +47,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		onSubmitMessage: data => {
-			dispatch({type: 'SUBMIT_MESSAGE', value: data.target ? data.target.value : data.userField})
-			dispatch({type: 'NEW_QUESTION'})
+			dispatch({type: actionTypes.SUBMIT_MESSAGE, value: data.target ? data.target.value : data.userField})
+			dispatch({type: actionTypes.NEW_QUESTION})
 			dispatch(reset('userForm'));
 		}
 	}
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chatbot);
+export default connect(mapStateToProps, mapDispatchToProps)(chatbot);

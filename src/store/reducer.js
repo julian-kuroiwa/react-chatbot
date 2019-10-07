@@ -1,4 +1,5 @@
 import questions from '../data/questions';
+import * as actionTypes from './actions';
 
 const initialState = {
 	answers: {},
@@ -13,7 +14,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 	switch(action.type) {
-		case 'SUBMIT_MESSAGE':
+		case actionTypes.SUBMIT_MESSAGE:
 			return {
 				...state,
 				answers: {
@@ -28,7 +29,7 @@ const reducer = (state = initialState, action) => {
 				],
 				counter: state.counter + 1,
 			}
-		case 'NEW_QUESTION':
+		case actionTypes.NEW_QUESTION:
 			return {
 				...state,
 				messages: [
