@@ -21,7 +21,8 @@ const chatbot = props => {
 	return (
 		<Fragment>
 		<MessageList
-			messages={props.messages} >
+			messages={props.messages}
+			user={props.user} >
 				{messages}
 		</MessageList>
 		{(props.currentQuestion === 'end'
