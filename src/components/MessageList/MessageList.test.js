@@ -2,8 +2,8 @@ import React from 'react';
 
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import renderer from 'react-test-renderer';
 
-import {MessageListContainer} from './MessageListContainer/MessageListContainer';
 import MessageList from './MessageList';
 
 import configureMockStore from 'redux-mock-store';
@@ -33,4 +33,9 @@ describe('<MessageList />', () => {
 	it('Component is rendered', () => {
 		expect(wrapper).toEqual({});
 	});
+
+	const tree = renderer
+	.create(<MessageList store={store} />)
+	.toJSON();
+	expect(tree).toMatchSnapshot();
 });
