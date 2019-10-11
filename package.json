@@ -11,6 +11,7 @@
     "react-scripts": "3.2.0",
     "react-test-renderer": "^16.10.2",
     "redux-form": "^8.2.6",
+    "selenium-webdriver": "^4.0.0-alpha.5",
     "styled-components": "^4.4.0"
   },
   "scripts": {
@@ -47,6 +48,7 @@
     "redux": "^4.0.4",
     "redux-form-storybook": "^1.0.2",
     "redux-mock-store": "^1.5.3",
-    "storybook-chromatic": "^3.0.1"
+    "storybook-chromatic": "^3.0.1",
+    "taiko": "^1.0.2"
   }
 }
